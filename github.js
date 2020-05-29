@@ -4,6 +4,8 @@ class Github {
 	constructor() {
 		this.client_id = 'ea79d0b63582f37fc31d';
 		this.client_secret = 'db96edd928afaec220ec482f9b94e482cf92ecc8';
+		this.repos_count = 5;
+		this.repos_sort = 'created: asc';
 	}
 
 	//get 1. users and 2. repos
@@ -12,10 +14,15 @@ class Github {
 			`https://api.github.com/users/${user}?client_id=${this.client_id}&client_secret=${this.client_secret}`
 		);
 
+		const repoResponse = await fetch(
+			`https://api.github.com/users/${user}/repos?per_page=${this.repos_count}&sort=${this.repos_sort}&client_id=${this.client_id}&client_secret=${this.client_secret}`
+		);
 		const profile = await profileResponse.json();
 
+		const repos = await repoResponse.json();
 		return {
 			profile,
+			repos,
 		};
 	}
 }
